@@ -50,34 +50,76 @@
   .res.done{animation:shake .45s ease}
   @keyframes shake{0%,100%{transform:translate(0)}20%{transform:translate(-4px,2px)}40%{transform:translate(4px,-3px)}60%{transform:translate(-3px,-2px)}80%{transform:translate(3px,2px)}}
   .res.done .cls{text-shadow:0 0 14px #ffd27a,0 0 28px #c8a15a;font-size:30px}
-  #pop{position:fixed;inset:0;z-index:80;display:none;align-items:center;justify-content:center;
-    background:rgba(0,0,0,.82);cursor:pointer}
+  /* ===== 카드팩 깡 팝업 ===== */
+  #pop{position:fixed;inset:0;z-index:80;display:none;align-items:center;justify-content:center;--c:#ffd27a;
+    background:radial-gradient(circle at 50% 50%,#1a1030 0%,#05030a 78%);cursor:pointer;overflow:hidden}
   #pop.on{display:flex}
-  #pop .box{text-align:center;animation:popin .55s cubic-bezier(.2,1.5,.4,1)}
-  #pop .who{font-size:clamp(18px,3vw,26px);color:var(--muted);margin-bottom:8px;letter-spacing:2px}
-  #pop .art{width:min(70vw,340px);height:min(62vh,460px);margin:0 auto;display:flex;align-items:center;justify-content:center;
-    border:2px solid var(--gold);border-radius:12px;background:radial-gradient(circle at 50% 35%,#3a1d16,#120c0a);
-    box-shadow:0 0 40px #c8a15a66;overflow:hidden}
-  #pop .art img{width:100%;height:100%;object-fit:contain}
-  #pop .art .emo{font-size:min(30vw,170px)}
-  #pop .nm{font-size:clamp(40px,10vw,72px);font-weight:900;color:var(--gold);margin-top:14px;
-    text-shadow:0 0 24px #ff9f1c,0 4px 0 #5a2a00}
-  #pop .hint2{color:var(--muted);font-size:13px;margin-top:6px}
-  @keyframes popin{0%{transform:scale(.4) rotate(-6deg);opacity:0}100%{transform:scale(1) rotate(0);opacity:1}}
+  #pop .rays{position:absolute;left:50%;top:50%;width:230vmax;height:230vmax;margin:-115vmax 0 0 -115vmax;opacity:0;pointer-events:none;
+    background:repeating-conic-gradient(from 0deg,var(--c) 0 6deg,transparent 6deg 18deg);
+    -webkit-mask:radial-gradient(circle,#000 0,transparent 52%);mask:radial-gradient(circle,#000 0,transparent 52%);
+    animation:spinr 9s linear infinite;transition:opacity .5s}
+  #pop .rays.on{opacity:.6}
+  @keyframes spinr{to{transform:rotate(360deg)}}
+  #pop .stage{position:relative;width:min(64vw,270px);aspect-ratio:5/7.2;perspective:900px}
+  /* 팩 */
+  #pop .pack{position:absolute;inset:0;display:flex;flex-direction:column;z-index:2;animation:drop .65s cubic-bezier(.2,.9,.3,1) both}
+  @keyframes drop{0%{transform:translateY(-120vh) rotate(-10deg)}70%{transform:translateY(14px) rotate(2deg)}100%{transform:none}}
+  #pop .pack.shake1{animation:sh1 .12s infinite;filter:drop-shadow(0 0 10px var(--c))}
+  #pop .pack.shake2{animation:sh2 .1s infinite;filter:drop-shadow(0 0 22px var(--c))}
+  #pop .pack.shake3{animation:sh3 .08s infinite;filter:drop-shadow(0 0 40px var(--c)) brightness(1.15)}
+  @keyframes sh1{0%,100%{transform:translateX(0)}25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+  @keyframes sh2{0%,100%{transform:translate(0) rotate(0)}25%{transform:translate(-6px,2px) rotate(-2deg)}75%{transform:translate(6px,-2px) rotate(2deg)}}
+  @keyframes sh3{0%,100%{transform:translate(0) rotate(0) scale(1.04)}20%{transform:translate(-10px,3px) rotate(-4deg) scale(1.07)}
+    40%{transform:translate(9px,-4px) rotate(4deg) scale(1.04)}60%{transform:translate(-9px,-2px) rotate(-3deg) scale(1.07)}80%{transform:translate(10px,3px) rotate(3deg) scale(1.04)}}
+  #pop .ph{flex:1;position:relative;background:linear-gradient(135deg,#5d6270,#dfe3ec 28%,#8a91a2 52%,#f1f4fa 74%,#666c7b);
+    transition:transform .75s cubic-bezier(.3,0,.2,1),opacity .75s}
+  #pop .ph.top{border-radius:14px 14px 0 0;clip-path:polygon(0 0,100% 0,100% 90%,88% 100%,72% 87%,55% 100%,38% 88%,20% 100%,0 89%)}
+  #pop .ph.bot{border-radius:0 0 14px 14px;clip-path:polygon(0 11%,12% 0,28% 13%,45% 0,62% 12%,80% 0,100% 11%,100% 100%,0 100%)}
+  #pop .plabel{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#262b36;
+    text-shadow:0 1px 0 #fff9;transition:opacity .3s;pointer-events:none}
+  #pop .plabel .band{position:absolute;left:0;right:0;top:41%;height:18%;background:var(--c);opacity:.9;z-index:-1}
+  #pop .plabel .em{font-size:clamp(40px,12vw,64px);line-height:1}
+  #pop .plabel b{font-size:clamp(20px,5.5vw,28px);letter-spacing:3px;margin-top:4px;color:#10131a}
+  #pop .plabel small{font-size:12px;letter-spacing:4px;margin-top:4px;color:#10131a}
+  #pop .pack.open{animation:none;filter:none}
+  #pop .pack.open .ph.top{transform:translateY(-130%) rotate(-16deg);opacity:0}
+  #pop .pack.open .ph.bot{transform:translateY(130%) rotate(12deg);opacity:0}
+  #pop .pack.open .plabel{opacity:0}
+  /* 카드 */
+  #pop .card{position:absolute;inset:0;transform-style:preserve-3d;opacity:0;transform:scale(.3) rotateY(180deg);
+    transition:transform .85s cubic-bezier(.3,1.25,.5,1),opacity .3s}
+  #pop .card.in{opacity:1;transform:scale(1) rotateY(180deg)}
+  #pop .card.flip{opacity:1;transform:scale(1) rotateY(0deg)}
+  #pop .face{position:absolute;inset:0;border-radius:16px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden}
+  #pop .face.back{transform:rotateY(180deg);background:repeating-linear-gradient(45deg,#1b1330 0 10px,#241a40 10px 20px);
+    border:3px solid var(--c);display:flex;align-items:center;justify-content:center;font-size:56px;font-weight:900;color:var(--c)}
+  #pop .face.front{background:linear-gradient(160deg,#fff3b0 0%,#e2b341 38%,#8a5a12 100%);
+    box-shadow:0 0 36px var(--c),0 0 90px var(--c)}
+  #pop .front .inner{position:absolute;inset:7px;border-radius:12px;background:radial-gradient(circle at 50% 38%,#3a2412,#120a06);
+    border:2px solid #fff3b099;overflow:hidden}
+  #pop .front .art{position:absolute;left:0;right:0;top:12%;height:66%;display:flex;align-items:center;justify-content:center}
+  #pop .front .art img{width:100%;height:100%;object-fit:contain}
+  #pop .front .art .emo{font-size:min(24vw,120px)}
+  #pop .front .top{position:absolute;left:10px;top:8px;font-weight:900;color:#ffe9a8;line-height:1.1;font-size:18px;text-align:center}
+  #pop .front .nm{position:absolute;left:0;right:0;bottom:30px;text-align:center;font-size:clamp(22px,7vw,32px);font-weight:900;color:#ffe9a8;
+    text-shadow:0 0 12px var(--c),0 2px 0 #5a2a00}
+  #pop .front .who{position:absolute;left:0;right:0;bottom:9px;text-align:center;font-size:13px;color:#d8c08a;letter-spacing:3px}
+  #pop .front .shine{position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,#ffffffaa 50%,transparent 65%);transform:translateX(-130%)}
+  #pop .card.flip .shine{animation:shine 1.2s .45s ease-out forwards}
+  @keyframes shine{to{transform:translateX(130%)}}
+  #pop .fl{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:5}
+  #pop .fl.on{animation:flashp .8s ease-out}
+  @keyframes flashp{0%{opacity:.95}100%{opacity:0}}
+  #pop .hint2{position:absolute;left:0;right:0;bottom:16px;text-align:center;color:#8d7f96;font-size:13px;pointer-events:none}
 </style>
 </head>
 <body>
 <canvas id="fx"></canvas>
-<div id="pop"><div class="box">
-  <div class="who" id="popWho"></div>
-  <div class="art" id="popArt"></div>
-  <div class="nm" id="popNm"></div>
-  <div class="hint2">클릭하면 넘어갑니다</div>
-</div></div>
+<div id="pop"></div>
 <div class="wrap">
   <h1>⚔ 디아블로2 래더 직업 뽑기</h1>
   <div class="sub">친구별로 이전 시즌 직업을 제외하고, 직업이 겹치지 않게 랜덤 배정합니다. (클릭하면 제외 / 해제)</div>
-  <div class="sub" style="margin-top:-14px;color:var(--gold)">🆕 v4.2 (11/06) · 아마존 활 쏘는 방향 수정 (+ 드루이드·네크로맨서·어쌔신 일러스트 교체, 이미지 캐시 수정)</div>
+  <div class="sub" style="margin-top:-14px;color:var(--gold)">🆕 v5 (11/06) · 당첨 팝업을 피파온라인식 카드팩 깡 연출로 변경 (+ 아마존 활 방향 수정)</div>
 
   <div class="panel">
     <label style="cursor:pointer;font-size:16px">
@@ -271,28 +313,99 @@ const CLASS_IMG = {
   "어쌔신":"img/assassin.svg","악마술사":"img/warlock.svg"
 };
 const CLASS_EMO = {"아마존":"🏹","네크로맨서":"💀","바바리안":"⚔️","팔라딘":"🛡️","소서리스":"❄️","드루이드":"🐺","어쌔신":"🗡️","악마술사":"😈"};
+const CLASS_COLOR = {"아마존":"#7bd96b","네크로맨서":"#b27be0","바바리안":"#ff7a3c","팔라딘":"#ffd86b","소서리스":"#7fd6ff","드루이드":"#8fd16b","어쌔신":"#ff4a5a","악마술사":"#5dff4a"};
+
+// ===== 사운드 (효과음) =====
+let ac = null;
+function audio(){ try{ if(!ac) ac = new (window.AudioContext||window.webkitAudioContext)(); if(ac.state==="suspended") ac.resume(); }catch(e){} return ac; }
+function beep(freq, dur, type="square", vol=.1, when=0){
+  try{
+    const a = audio(); if(!a) return;
+    const o = a.createOscillator(), g = a.createGain();
+    o.type = type; o.frequency.value = freq; o.connect(g); g.connect(a.destination);
+    const t = a.currentTime + when; g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+    o.start(t); o.stop(t + dur + .02);
+  }catch(e){}
+}
+
+// 피파온라인식 카드팩 깡: 팩 낙하 → 점점 세게 흔들림 → 찢어짐+번쩍 → 카드 뒤집힘
 function showPop(who, cls){
   return new Promise(resolve => {
-    const pop = $("pop"), art = $("popArt");
-    $("popWho").textContent = who;
-    $("popNm").textContent = cls;
-    art.innerHTML = "";
+    const pop = $("pop");
+    pop.style.setProperty("--c", CLASS_COLOR[cls] || "#ffd27a");
+    pop.innerHTML = `
+      <div class="rays"></div>
+      <div class="stage">
+        <div class="card">
+          <div class="face back">D2</div>
+          <div class="face front"><div class="inner">
+            <div class="top">D2<br><span class="em2"></span></div>
+            <div class="art"></div><div class="nm"></div><div class="who"></div><div class="shine"></div>
+          </div></div>
+        </div>
+        <div class="pack"><div class="ph top"></div><div class="ph bot"></div>
+          <div class="plabel"><div class="band"></div><div class="em">⚔</div><b>DIABLO II</b><small>LADDER PACK</small></div>
+        </div>
+      </div>
+      <div class="fl"></div>
+      <div class="hint2">클릭하면 건너뜁니다</div>`;
+    const q = s => pop.querySelector(s);
+    q(".nm").textContent = cls; q(".who").textContent = who; q(".em2").textContent = CLASS_EMO[cls] || "🎲";
+    const art = q(".art");
     const emo = () => { art.innerHTML = `<div class="emo">${CLASS_EMO[cls]||"🎲"}</div>`; };
     if(CLASS_IMG[cls]){
       const im = new Image(); im.alt = cls; im.onerror = emo; im.src = CLASS_IMG[cls] + "?v=" + IMG_VER; art.appendChild(im);
     } else emo();
     pop.classList.add("on");
-    burst(innerWidth/2, innerHeight/2, 120, 1.5);
-    let done = false;
-    const close = () => { if(done) return; done = true; pop.classList.remove("on"); pop.onclick = null; resolve(); };
-    pop.onclick = close;
-    setTimeout(close, 2600);
+
+    const pack = q(".pack"), card = q(".card"), rays = q(".rays"), fl = q(".fl");
+    let timers = [], stage = 0, closed = false, revealedAt = 0;
+    const T = (fn, ms) => timers.push(setTimeout(fn, ms));
+    const cx = () => innerWidth/2, cy = () => innerHeight/2;
+
+    const close = () => {
+      if(closed) return; closed = true;
+      timers.forEach(clearTimeout); pop.classList.remove("on"); pop.onclick = null; pop.innerHTML = ""; resolve();
+    };
+    const tear = () => {          // 팩 찢김 + 번쩍
+      pack.className = "pack open"; rays.classList.add("on");
+      fl.classList.remove("on"); void fl.offsetWidth; fl.classList.add("on");
+      card.classList.add("in");
+      beep(90,.5,"sine",.4); beep(55,.7,"sine",.4); beep(1200,.08,"square",.1);
+      burst(cx(), cy(), 90, 1.4);
+    };
+    const flip = () => {          // 카드 공개
+      card.classList.add("flip"); stage = 3; revealedAt = Date.now();
+      [523,659,784,1047].forEach((f,i) => beep(f,.25,"triangle",.2,i*.1));
+      burst(cx(), cy(), 140, 1.7);
+      T(() => burst(cx()-90, cy()-60, 70, 1.2), 250);
+      T(() => burst(cx()+90, cy()-40, 70, 1.2), 450);
+      T(close, 2600);
+    };
+
+    // 타임라인
+    beep(300,.25,"sawtooth",.08);
+    T(() => { pack.className = "pack shake1"; }, 750);
+    T(() => { pack.className = "pack shake2"; }, 1550);
+    T(() => { pack.className = "pack shake3"; }, 2300);
+    for(let t = 800; t < 2900; t += 160) T(() => beep(160 + (t-800)/2100*520, .07, "square", .06), t);
+    T(() => { stage = 2; tear(); }, 3000);
+    T(flip, 3650);
+
+    pop.onclick = () => {
+      if(closed) return;
+      if(stage === 3){ if(Date.now() - revealedAt > 400) close(); return; }
+      timers.forEach(clearTimeout); timers = [];     // 연출 건너뛰기 → 바로 공개
+      if(stage < 2) tear();
+      T(flip, 400);
+    };
   });
 }
 
 let running = false;
 $("go").onclick = async () => {
   if(running) return;
+  audio(); // 효과음은 클릭 후에만 재생 가능
   const err = $("err"); err.textContent = "";
   const pool = state.classes.filter(c=>c.on);
   if(!state.allowDup && pool.length < state.players.length){
