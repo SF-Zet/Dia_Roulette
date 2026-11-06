@@ -1,27 +1,40 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 420">
-<defs><radialGradient id="bg" cx="50%" cy="38%" r="80%"><stop offset="0" stop-color="#2f5a24"/><stop offset="1" stop-color="#070a05"/></radialGradient>
+<defs><radialGradient id="bg" cx="50%" cy="38%" r="80%"><stop offset="0" stop-color="#355f26"/><stop offset="1" stop-color="#070a05"/></radialGradient>
 <filter id="gl"><feGaussianBlur stdDeviation="9"/></filter></defs>
 <rect width="300" height="420" fill="url(#bg)"/>
-<circle cx="150" cy="190" r="95" fill="#8fd16b" opacity=".28" filter="url(#gl)"/>
-<ellipse cx="150" cy="398" rx="90" ry="10" fill="#000" opacity=".5"/>
-<!-- 달 -->
-<path d="M62 62 A30 30 0 1 0 90 108 A38 38 0 1 1 62 62 Z" fill="#f2efc8" opacity=".9"/>
-<!-- 로브 -->
-<path d="M150 104 Q104 112 98 172 L82 396 L218 396 L202 172 Q196 112 150 104 Z" fill="#100d07" stroke="#8fd16b" stroke-width="2.5"/>
-<path d="M98 172 Q150 205 202 172 L206 210 Q150 238 94 210 Z" fill="#3a2a18" stroke="#c9a56a" stroke-width="2"/>
-<path d="M150 235 L150 392" stroke="#8fd16b" stroke-width="1.5" opacity=".5"/>
-<!-- 얼굴 + 뿔 -->
-<ellipse cx="150" cy="148" rx="25" ry="30" fill="#040302"/>
-<circle cx="141" cy="146" r="3.5" fill="#ffd36b"/><circle cx="159" cy="146" r="3.5" fill="#ffd36b"/>
-<g fill="none" stroke="#d6c08f" stroke-width="4.5" stroke-linecap="round">
-<path d="M132 112 Q116 76 94 62"/><path d="M118 82 Q104 78 92 86"/><path d="M125 96 Q110 94 100 104"/>
-<path d="M168 112 Q184 76 206 62"/><path d="M182 82 Q196 78 208 86"/><path d="M175 96 Q190 94 200 104"/></g>
-<!-- 지팡이 -->
-<path d="M236 84 L232 396" stroke="#7a5a30" stroke-width="7"/>
-<path d="M236 84 Q268 64 256 36 Q226 40 236 74" fill="none" stroke="#7a5a30" stroke-width="6" stroke-linecap="round"/>
-<circle cx="250" cy="52" r="7" fill="#8fd16b"/><circle cx="250" cy="52" r="14" fill="#8fd16b" opacity=".35"/>
-<path d="M200 206 Q226 220 234 206" fill="none" stroke="#8fd16b" stroke-width="7" stroke-linecap="round"/>
-<!-- 나뭇잎 -->
-<g fill="#8fd16b" opacity=".85"><ellipse cx="60" cy="230" rx="12" ry="5" transform="rotate(-30 60 230)"/><ellipse cx="44" cy="290" rx="12" ry="5" transform="rotate(20 44 290)"/>
-<ellipse cx="262" cy="270" rx="12" ry="5" transform="rotate(-20 262 270)"/><ellipse cx="270" cy="340" rx="12" ry="5" transform="rotate(35 270 340)"/></g>
+<circle cx="205" cy="110" r="62" fill="#f2efc8" opacity=".85"/>
+<circle cx="205" cy="110" r="80" fill="#f2efc8" opacity=".2" filter="url(#gl)"/>
+<circle cx="150" cy="220" r="100" fill="#8fd16b" opacity=".22" filter="url(#gl)"/>
+<ellipse cx="150" cy="398" rx="95" ry="10" fill="#000" opacity=".55"/>
+<g stroke-linejoin="round" stroke-linecap="round">
+<!-- 꼬리 -->
+<path d="M200 300 Q270 300 262 240 Q248 276 204 276 Z" fill="#17120a" stroke="#8fd16b" stroke-width="2.5"/>
+<!-- 다리 -->
+<path d="M116 270 L98 336 L84 392 L126 392 L138 340 L150 304 L162 340 L174 392 L216 392 L202 336 L192 270 Z" fill="#17120a" stroke="#8fd16b" stroke-width="2.5"/>
+<path d="M84 392 L80 400 M96 392 L96 402 M108 392 L112 402 M174 392 L172 402 M186 392 L188 402 M198 392 L204 402" stroke="#f0ead2" stroke-width="3"/>
+<!-- 허리 천 -->
+<path d="M114 266 L196 266 L188 322 L172 302 L152 330 L134 302 L122 322 Z" fill="#3a2a18" stroke="#c9a56a" stroke-width="2"/>
+<!-- 몸통 (구부정, 우람) -->
+<path d="M96 178 Q150 146 210 180 L196 272 L114 272 Q100 230 96 178 Z" fill="#17120a" stroke="#8fd16b" stroke-width="2.8"/>
+<path d="M124 200 L136 212 L126 222 L140 232 L128 244 L142 254 M176 200 L168 212 L178 222 L164 232 L176 244 L162 254" fill="none" stroke="#8fd16b" stroke-width="2" opacity=".7"/>
+<!-- 팔 (왼: 위로 / 오른: 아래로 할퀴기) -->
+<path d="M112 192 L70 208 L56 156" fill="none" stroke="#8fd16b" stroke-width="30"/>
+<path d="M112 192 L70 208 L56 156" fill="none" stroke="#17120a" stroke-width="25"/>
+<path d="M200 194 L240 238 L250 292" fill="none" stroke="#8fd16b" stroke-width="30"/>
+<path d="M200 194 L240 238 L250 292" fill="none" stroke="#17120a" stroke-width="25"/>
+<g stroke="#f0ead2" stroke-width="5"><path d="M56 148 L36 114"/><path d="M56 148 L52 108"/><path d="M58 148 L72 112"/>
+<path d="M250 300 L238 334"/><path d="M252 302 L254 338"/><path d="M256 298 L272 330"/></g>
+<!-- 갈기 -->
+<path d="M96 168 L84 146 L104 148 L96 124 L118 134 L116 110 L136 128 L146 102 L158 128 L178 108 L180 132 L204 124 L196 150 L218 152 L204 176 Z" fill="#241c10" stroke="#8fd16b" stroke-width="2"/>
+<!-- 늑대 머리 (왼쪽을 향해 포효) -->
+<path d="M126 100 Q152 82 178 104 L182 132 Q172 156 150 158 Q130 156 122 132 Z" fill="#17120a" stroke="#8fd16b" stroke-width="2.8"/>
+<path d="M124 118 L80 124 Q70 132 82 138 L126 140 Z" fill="#17120a" stroke="#8fd16b" stroke-width="2.8"/>
+<path d="M126 144 L88 146 Q96 168 132 160 Z" fill="#17120a" stroke="#8fd16b" stroke-width="2.8"/>
+<path d="M126 142 L88 140 L126 134 Z" fill="#5a1414"/>
+<path d="M94 140 L98 130 L102 140 Z M108 140 L112 132 L116 140 Z M96 147 L100 155 L104 147 Z M110 147 L114 154 L118 146 Z" fill="#fff"/>
+<path d="M136 92 L134 54 L158 86 Z" fill="#17120a" stroke="#8fd16b" stroke-width="2.5"/>
+<path d="M164 90 L176 52 L190 98 Z" fill="#17120a" stroke="#8fd16b" stroke-width="2.5"/>
+<path d="M130 116 L146 110 L144 119 Z" fill="#ffd36b"/><circle cx="138" cy="115" r="12" fill="#ffd36b" opacity=".35"/>
+<circle cx="84" cy="128" r="3" fill="#fff" opacity=".0"/>
+</g>
 </svg>

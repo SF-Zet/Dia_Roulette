@@ -2,24 +2,64 @@
 <defs><radialGradient id="bg" cx="50%" cy="38%" r="80%"><stop offset="0" stop-color="#3c1b55"/><stop offset="1" stop-color="#0a060d"/></radialGradient>
 <filter id="gl"><feGaussianBlur stdDeviation="9"/></filter></defs>
 <rect width="300" height="420" fill="url(#bg)"/>
-<circle cx="150" cy="190" r="95" fill="#a25be0" opacity=".3" filter="url(#gl)"/>
-<ellipse cx="150" cy="398" rx="90" ry="10" fill="#000" opacity=".5"/>
+<circle cx="150" cy="200" r="100" fill="#a25be0" opacity=".25" filter="url(#gl)"/>
+<ellipse cx="240" cy="395" rx="60" ry="26" fill="#6dff5a" opacity=".3" filter="url(#gl)"/>
+<ellipse cx="150" cy="398" rx="130" ry="10" fill="#000" opacity=".55"/>
+<g stroke-linejoin="round" stroke-linecap="round">
+<!-- 땅 갈라짐 + 녹색 기운 -->
+<path d="M180 396 L204 386 L222 396 L246 384 L268 396" fill="none" stroke="#6dff5a" stroke-width="3" opacity=".8"/>
+<g fill="#6dff5a" opacity=".7"><circle cx="212" cy="352" r="3"/><circle cx="262" cy="340" r="2.5"/><circle cx="196" cy="320" r="2"/><circle cx="276" cy="300" r="3"/></g>
+<!-- 뒤에서 솟는 해골 병사 -->
+<g transform="translate(-6 0)" opacity=".95">
+<path d="M52 392 L52 352" stroke="#e8e0cd" stroke-width="4"/>
+<circle cx="52" cy="340" r="13" fill="#e8e0cd"/><circle cx="47" cy="338" r="3.5" fill="#12081a"/><circle cx="58" cy="338" r="3.5" fill="#12081a"/>
+<path d="M30 392 L22 350 M22 350 L16 334 M22 350 L26 332 M22 350 L32 336" stroke="#e8e0cd" stroke-width="3.5" fill="none"/>
+</g>
+<!-- 망토 -->
+<path d="M84 160 Q122 138 162 160 L186 396 L60 396 Z" fill="#0c0613" stroke="#a97be0" stroke-width="2.5"/>
 <!-- 로브 -->
-<path d="M150 92 Q105 100 98 165 L66 396 L234 396 L202 165 Q195 100 150 92 Z" fill="#12081a" stroke="#b27be0" stroke-width="2.5"/>
-<path d="M120 230 Q150 250 180 230 M116 258 Q150 280 184 258 M112 286 Q150 310 188 286 M108 314 Q150 340 192 314" fill="none" stroke="#d8cfb6" stroke-width="3" opacity=".55"/>
-<path d="M150 170 L150 390" stroke="#b27be0" stroke-width="1.5" opacity=".6"/>
-<!-- 얼굴 -->
-<ellipse cx="150" cy="146" rx="26" ry="32" fill="#030104"/>
-<circle cx="141" cy="143" r="4" fill="#a5ff6a"/><circle cx="159" cy="143" r="4" fill="#a5ff6a"/>
-<circle cx="141" cy="143" r="9" fill="#a5ff6a" opacity=".25"/><circle cx="159" cy="143" r="9" fill="#a5ff6a" opacity=".25"/>
-<!-- 지팡이 + 해골 -->
-<path d="M232 118 L228 396" stroke="#8a6a45" stroke-width="6"/>
-<circle cx="233" cy="96" r="19" fill="#ece5d2"/>
-<rect x="224" y="108" width="18" height="12" rx="3" fill="#ece5d2"/>
-<circle cx="226" cy="94" r="4.5" fill="#12081a"/><circle cx="241" cy="94" r="4.5" fill="#12081a"/>
-<path d="M233 99 L230 106 L236 106 Z" fill="#12081a"/>
-<path d="M196 192 Q218 224 230 214" fill="none" stroke="#b27be0" stroke-width="6" stroke-linecap="round"/>
+<path d="M96 166 Q124 152 152 166 L168 396 L80 396 Z" fill="#17092a" stroke="#c9a2f2" stroke-width="2.5"/>
+<path d="M124 190 L124 392" stroke="#c9a2f2" stroke-width="1.5" opacity=".6"/>
+<path d="M96 262 L152 262" stroke="#6b4a2a" stroke-width="9"/><rect x="118" y="256" width="12" height="12" fill="#e8e0cd"/>
+<!-- 뼈 견갑 -->
+<ellipse cx="92" cy="170" rx="16" ry="11" fill="#e8e0cd"/><path d="M82 162 L76 148 L88 158 M92 160 L92 144 L98 158" fill="#e8e0cd"/>
+<ellipse cx="156" cy="170" rx="16" ry="11" fill="#e8e0cd"/><path d="M166 162 L172 148 L160 158 M156 160 L156 144 L150 158" fill="#e8e0cd"/>
+<!-- 머리 (남자: 창백, 뒤로 넘긴 머리, 턱수염) -->
+<circle cx="124" cy="130" r="21" fill="#d8cdb8" stroke="#a97be0" stroke-width="2.5"/>
+<path d="M103 126 Q104 100 124 100 Q146 100 146 126 Q138 112 124 112 Q110 112 103 126 Z" fill="#0b050f"/>
+<path d="M112 142 Q124 164 136 142 Q124 150 112 142 Z" fill="#0b050f"/>
+<circle cx="116" cy="128" r="3" fill="#6dff5a"/><circle cx="132" cy="128" r="3" fill="#6dff5a"/>
+<circle cx="116" cy="128" r="8" fill="#6dff5a" opacity=".25"/><circle cx="132" cy="128" r="8" fill="#6dff5a" opacity=".25"/>
+<!-- 왼팔: 아래 쪽 녹색 구체 -->
+<path d="M92 180 L66 216 L62 250" fill="none" stroke="#c9a2f2" stroke-width="19"/><path d="M92 180 L66 216 L62 250" fill="none" stroke="#17092a" stroke-width="14"/>
+<circle cx="62" cy="258" r="10" fill="#aaff88"/><circle cx="62" cy="258" r="20" fill="#6dff5a" opacity=".35"/>
+<!-- 오른팔: 해골 병사를 향해 뻗음 -->
+<path d="M156 182 L186 200 L212 196" fill="none" stroke="#c9a2f2" stroke-width="19"/><path d="M156 182 L186 200 L212 196" fill="none" stroke="#17092a" stroke-width="14"/>
+<circle cx="218" cy="194" r="7" fill="#d8cdb8"/>
+<path d="M222 196 Q236 216 244 246" stroke="#6dff5a" stroke-width="3" fill="none" stroke-dasharray="3 5"/>
+<!-- 해골 전사 -->
+<g stroke="#e8e0cd" fill="none" stroke-width="5">
+<path d="M246 318 L232 352 L226 392 M246 318 L262 352 L268 392"/>
+<path d="M246 318 L246 232"/>
+</g>
+<path d="M236 392 L222 392 M276 392 L262 392" stroke="#e8e0cd" stroke-width="5"/>
+<ellipse cx="246" cy="258" rx="22" ry="32" fill="#1a0f26" stroke="#e8e0cd" stroke-width="3"/>
+<path d="M226 244 L266 244 M226 258 L266 258 M228 272 L264 272 M234 285 L258 285" stroke="#e8e0cd" stroke-width="3"/>
+<path d="M232 316 L260 316" stroke="#e8e0cd" stroke-width="6"/>
+<circle cx="246" cy="208" r="17" fill="#ece5d2" stroke="#a97be0" stroke-width="1.5"/><rect x="238" y="218" width="16" height="9" rx="2" fill="#ece5d2"/>
+<circle cx="240" cy="206" r="4.5" fill="#12081a"/><circle cx="253" cy="206" r="4.5" fill="#12081a"/>
+<path d="M246 211 L243 217 L249 217 Z" fill="#12081a"/>
+<circle cx="240" cy="206" r="2" fill="#6dff5a"/><circle cx="253" cy="206" r="2" fill="#6dff5a"/>
+<!-- 칼 든 팔 -->
+<path d="M262 236 L284 214 L280 176" stroke="#e8e0cd" stroke-width="5" fill="none"/>
+<path d="M280 178 L284 64" stroke="#d9dee2" stroke-width="9"/><path d="M280 178 L284 64" stroke="#fff" stroke-width="2.5"/>
+<path d="M268 180 L292 176" stroke="#8a6a3a" stroke-width="7"/>
+<!-- 방패 -->
+<path d="M230 236 L214 262" stroke="#e8e0cd" stroke-width="5" fill="none"/>
+<circle cx="206" cy="272" r="24" fill="#3a2a18" stroke="#e8e0cd" stroke-width="3"/>
+<circle cx="206" cy="272" r="7" fill="#c9a56a"/>
 <!-- 떠다니는 해골 -->
-<g opacity=".8"><circle cx="68" cy="130" r="9" fill="#ece5d2"/><circle cx="64" cy="128" r="2" fill="#12081a"/><circle cx="72" cy="128" r="2" fill="#12081a"/>
-<circle cx="52" cy="210" r="6.5" fill="#ece5d2" opacity=".8"/><circle cx="262" cy="250" r="7" fill="#ece5d2" opacity=".7"/></g>
+<g opacity=".8"><circle cx="48" cy="96" r="9" fill="#ece5d2"/><circle cx="44" cy="94" r="2" fill="#12081a"/><circle cx="52" cy="94" r="2" fill="#12081a"/>
+<circle cx="260" cy="96" r="6.5" fill="#ece5d2" opacity=".7"/><circle cx="170" cy="70" r="5" fill="#ece5d2" opacity=".6"/></g>
+</g>
 </svg>
