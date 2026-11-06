@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>음식 룰렛</title>
+<style>
+  :root{--bg:#0b0710;--gold:#ffd27a;--text:#fff3dc}
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;overflow:hidden}
+  body{background:radial-gradient(900px 600px at 50% 40%,#2b1238 0%,var(--bg) 70%);color:var(--text);
+    font-family:"Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  h1{margin:0 0 6px;font-size:30px;color:var(--gold);letter-spacing:2px;text-shadow:0 0 18px #ff9f1c88}
+  .sub{color:#b9a5c9;font-size:14px;margin-bottom:10px}
+  #stage{position:relative;width:min(86vw,64vh,560px);aspect-ratio:1;transition:transform .6s ease, filter .6s}
+  #wheel{width:100%;height:100%;display:block;filter:drop-shadow(0 0 30px #ff5a3c55)}
+  #pointer{position:absolute;left:50%;top:-4%;width:9%;transform:translateX(-50%);transform-origin:50% 20%;z-index:3;
+    filter:drop-shadow(0 4px 6px #000)}
+  #hub{position:absolute;left:50%;top:50%;width:17%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;
+    background:radial-gradient(circle at 35% 30%,#fff3c4,#c8892a 60%,#7a4a10);border:4px solid #fff3c4;z-index:2;
+    box-shadow:0 0 22px #ffd27a99;display:flex;align-items:center;justify-content:center;font-weight:900;color:#4a2300;font-size:clamp(12px,2.4vw,22px)}
+  #go{margin-top:22px;padding:15px 56px;font-size:24px;font-weight:900;letter-spacing:3px;color:#fff;cursor:pointer;
+    background:linear-gradient(#ff5a3c,#b8201a);border:2px solid #ffb199;border-radius:12px;box-shadow:0 0 28px #ff5a3c88;transition:.15s}
+  #go:hover{transform:scale(1.05)}
+  #go:disabled{opacity:.45;cursor:default;transform:none;box-shadow:none}
+  canvas#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:60}
+  #dim{position:fixed;inset:0;background:rgba(0,0,0,0);pointer-events:none;z-index:40;transition:background .8s}
+  #dim.on{background:rgba(0,0,0,.78)}
+  #flash{position:fixed;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:70}
+  #flash.go{animation:flash .7s ease-out}
+  @keyframes flash{0%{opacity:.95}100%{opacity:0}}
+  #win{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:55;pointer-events:none;opacity:0}
+  #win.on{opacity:1;pointer-events:auto}
+  #win .label{font-size:clamp(18px,3vw,28px);color:#ffe9b8;letter-spacing:6px;opacity:0}
+  #win .name{font-size:clamp(64px,16vw,170px);font-weight:900;color:var(--gold);transform:scale(0);margin:6px 0 20px;
+    text-shadow:0 0 30px #ff9f1c,0 0 70px #ff5a3c,0 6px 0 #7a3a00;white-space:nowrap}
+  #win.on .label{animation:fadeUp .6s .1s forwards}
+  #win.on .name{animation:slam .9s .35s cubic-bezier(.2,1.6,.4,1) forwards, glow 1.4s 1.3s ease-in-out infinite alternate}
+  #win button{opacity:0;padding:11px 34px;font-size:18px;border-radius:10px;border:2px solid #ffe9b8;background:#00000066;color:#ffe9b8;cursor:pointer}
+  #win.on button{animation:fadeUp .6s 1.6s forwards}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+  @keyframes slam{0%{transform:scale(0) rotate(-12deg)}100%{transform:scale(1) rotate(0)}}
+  @keyframes glow{from{filter:brightness(1)}to{filter:brightness(1.35)}}
+  .shake{animation:shk .12s infinite}
+  @keyframes shk{0%{transform:translate(0,0)}25%{transform:translate(3px,-2px)}50%{transform:translate(-3px,2px)}75%{transform:translate(2px,3px)}100%{transform:translate(0,0)}}
+</style>
+</head>
+<body>
+<canvas id="fx"></canvas>
+<div id="dim"></div>
+<div id="flash"></div>
+
+<h1>🍻 오늘 뭐 먹지? 🍻</h1>
+<div class="sub">운명의 룰렛이 정한다</div>
+
+<div id="stage">
+  <svg id="pointer" viewBox="0 0 60 80"><path d="M30 78 L4 14 Q30 -6 56 14 Z" fill="#ff3b30" stroke="#fff" stroke-width="4" stroke-linejoin="round"/><circle cx="30" cy="22" r="6" fill="#fff"/></svg>
+  <canvas id="wheel" width="1000" height="1000"></canvas>
+  <div id="hub">GO</div>
+</div>
+<button id="go">돌려라!</button>
+
+<div id="win">
+  <div class="label">오늘의 메뉴는</div>
+  <div class="name" id="winName"></div>
+  <button id="again">한 번 더?</button>
+</div>
+
+<script>
+const MENUS = [
+  {name:"족발",     color:"#c0392b", emoji:"🐷"},
+  {name:"닭도리탕", color:"#e67e22", emoji:"🍗"},
+  {name:"우설",     color:"#8e44ad", emoji:"🐂"},
+  {name:"네네",     color:"#2980b9", emoji:"🍗"},
+];
+const PER = 4; // 메뉴당 칸 수
+// 족발-닭도리탕-우설-네네 순서로 4바퀴 반복 배치 (같은 메뉴가 붙지 않음)
+const SLOTS = [];
+for(let r=0;r<PER;r++) MENUS.forEach(m => SLOTS.push(m));
+const N = SLOTS.length, SEG = Math.PI*2/N;
+const $ = id => document.getElementById(id);
+const wheel = $("wheel"), wc = wheel.getContext("2d");
+
+let theta = 0; // 현재 회전각
+
+function drawWheel(){
+  const W = wheel.width, R = W/2 - 14;
+  wc.clearRect(0,0,W,W);
+  wc.save(); wc.translate(W/2,W/2);
+  // 외곽 전구 링
+  wc.beginPath(); wc.arc(0,0,R+10,0,Math.PI*2); wc.fillStyle="#3a1c10"; wc.fill();
+  wc.lineWidth=6; wc.strokeStyle="#ffd27a"; wc.stroke();
+  wc.rotate(theta);
+  for(let i=0;i<N;i++){
+    const a0=i*SEG, a1=(i+1)*SEG;
+    wc.beginPath(); wc.moveTo(0,0); wc.arc(0,0,R,a0,a1); wc.closePath();
+    const gr = wc.createRadialGradient(0,0,R*.1,0,0,R);
+    gr.addColorStop(0,"#ffffff33"); gr.addColorStop(.25,SLOTS[i].color); gr.addColorStop(1,shade(SLOTS[i].color,-.35));
+    wc.fillStyle=gr; wc.fill();
+    wc.lineWidth=3; wc.strokeStyle="#fff3dc"; wc.stroke();
+    // 텍스트
+    wc.save(); wc.rotate(a0+SEG/2); wc.textAlign="right"; wc.textBaseline="middle";
+    wc.font="900 46px 'Malgun Gothic',sans-serif"; wc.fillStyle="#fff"; wc.shadowColor="#000a"; wc.shadowBlur=8;
+    wc.fillText(SLOTS[i].name, R-34, 0);
+    wc.font="40px sans-serif"; wc.shadowBlur=0; wc.textAlign="left";
+    wc.fillText(SLOTS[i].emoji, R*.2, 0);
+    wc.restore();
+  }
+  // 전구
+  const bulbs = 28, t = performance.now()/180;
+  for(let i=0;i<bulbs;i++){
+    const a = i/bulbs*Math.PI*2 - theta*0;
+    const on = (i + Math.floor(spinning ? t*2 : t/3)) % 2 === 0;
+    wc.beginPath(); wc.arc(Math.cos(a)*(R+10),Math.sin(a)*(R+10),7,0,Math.PI*2);
+    wc.fillStyle = on ? "#fff7c2" : "#8a5a20"; wc.shadowColor="#ffd27a"; wc.shadowBlur=on?18:0; wc.fill();
+  }
+  wc.restore();
+}
+function shade(hex,p){
+  const n=parseInt(hex.slice(1),16); let r=n>>16,g=(n>>8)&255,b=n&255;
+  r=Math.max(0,Math.min(255,r+r*p)); g=Math.max(0,Math.min(255,g+g*p)); b=Math.max(0,Math.min(255,b+b*p));
+  return `rgb(${r|0},${g|0},${b|0})`;
+}
+
+// ===== 사운드 =====
+let ac=null;
+function audio(){ if(!ac) ac = new (window.AudioContext||window.webkitAudioContext)(); if(ac.state==="suspended") ac.resume(); return ac; }
+function beep(freq,dur,type="square",vol=.12,when=0){
+  const a=audio(), o=a.createOscillator(), g=a.createGain();
+  o.type=type; o.frequency.value=freq; o.connect(g); g.connect(a.destination);
+  const t=a.currentTime+when; g.gain.setValueAtTime(vol,t); g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+  o.start(t); o.stop(t+dur+.02);
+}
+function tick(speedNorm){ beep(700+speedNorm*500, .05, "square", .1); }
+function fanfare(){
+  [523,659,784,1047,784,1047,1319].forEach((f,i)=>beep(f,.28,"triangle",.2,i*.12));
+  beep(130,1.2,"sawtooth",.15,0); beep(196,1.2,"sawtooth",.1,0);
+}
+function boom(){ beep(90,.5,"sine",.4); beep(60,.7,"sine",.4); }
+function drumroll(sec){ // 점점 빨라지는 북소리
+  let t=0, gap=.18;
+  while(t<sec){ beep(110,.06,"triangle",.12+0.1*(t/sec),t); t+=gap; gap=Math.max(.045,gap*.965); }
+}
+
+// ===== 폭죽 =====
+const fx=$("fx"), g=fx.getContext("2d"); let parts=[],raf=null;
+function rs(){fx.width=innerWidth;fx.height=innerHeight} addEventListener("resize",rs); rs();
+const COLORS=["#ffd27a","#ff5a3c","#ff9f1c","#fff3c4","#e63946","#7bdff2","#b8f35d","#f78fb3"];
+function burst(x,y,n=90,p=1){
+  for(let i=0;i<n;i++){const a=Math.random()*6.283,s=(2+Math.random()*7)*p;
+    parts.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:1,decay:.007+Math.random()*.013,size:2+Math.random()*3,
+      color:COLORS[Math.random()*COLORS.length|0],t:"s"});}
+  go();
+}
+function confetti(n=220){
+  for(let i=0;i<n;i++)parts.push({x:Math.random()*fx.width,y:-20-Math.random()*300,vx:(Math.random()-.5)*3,vy:2+Math.random()*4,
+    life:1,decay:.003,size:6+Math.random()*7,rot:Math.random()*6,vr:(Math.random()-.5)*.3,color:COLORS[Math.random()*COLORS.length|0],t:"c"});
+  go();
+}
+function go(){ if(!raf) raf=requestAnimationFrame(loop); }
+function loop(){
+  g.clearRect(0,0,fx.width,fx.height);
+  parts=parts.filter(p=>p.life>0&&p.y<fx.height+40);
+  for(const p of parts){
+    p.x+=p.vx;p.y+=p.vy;p.life-=p.decay;
+    if(p.t==="s"){p.vy+=.09;p.vx*=.985}else{p.rot+=p.vr;p.vx+=Math.sin(p.rot)*.05}
+    g.globalAlpha=Math.max(p.life,0);g.fillStyle=p.color;
+    if(p.t==="s"){g.beginPath();g.arc(p.x,p.y,p.size,0,6.283);g.fill()}
+    else{g.save();g.translate(p.x,p.y);g.rotate(p.rot);g.fillRect(-p.size/2,-p.size/4,p.size,p.size/2);g.restore()}
+  }
+  g.globalAlpha=1;
+  if(parts.length)raf=requestAnimationFrame(loop);else{raf=null;g.clearRect(0,0,fx.width,fx.height)}
+}
+function grandFinale(){
+  confetti(260);
+  for(let i=0;i<10;i++)setTimeout(()=>burst(innerWidth*(.1+Math.random()*.8),innerHeight*(.1+Math.random()*.5),110,1.4),i*200);
+  for(let i=0;i<8;i++)setTimeout(()=>confetti(60),1000+i*500);
+}
+
+// ===== 스핀 =====
+let spinning=false;
+const ease = t => 1-Math.pow(1-t,5); // 처음엔 엄청 빠르고 끝에서 아주 느리게 기어감
+const DURATION = 9000;
+
+function spin(){
+  if(spinning) return;
+  spinning=true; $("go").disabled=true;
+  audio();
+  const w = Math.random()*N|0;
+  // 칸 안에서 경계에 가깝게 멈춰 긴장감 (가끔은 정중앙)
+  const off = (Math.random()<.5 ? (Math.random()<.5?-1:1)*(.3+Math.random()*.15) : (Math.random()-.5)*.3)*SEG;
+  const base = -Math.PI/2 - (w+.5)*SEG + off;
+  let target = base - Math.floor(base/(Math.PI*2))*Math.PI*2; // 0~2π
+  let cur = ((theta%(Math.PI*2))+Math.PI*2)%(Math.PI*2);
+  let delta = target - cur; if(delta<0) delta += Math.PI*2;
+  const total = delta + Math.PI*2*(9+Math.random()*2|0);
+  const start = theta, t0 = performance.now();
+  let lastIdx = idxAt(theta), lastT = t0, lastTh = theta;
+  drumroll(DURATION/1000*.9);
+  $("stage").style.transform="scale(1.04)";
+
+  function frame(now){
+    const p = Math.min((now-t0)/DURATION,1);
+    theta = start + total*ease(p);
+    // 속도 계산
+    const dt = Math.max(now-lastT,1), speed = (theta-lastTh)/dt; // rad/ms
+    const sn = Math.min(speed/0.012,1);
+    lastT=now; lastTh=theta;
+    // 틱 & 포인터 튕김
+    const idx = idxAt(theta);
+    if(idx!==lastIdx){ tick(sn); flap(sn); lastIdx=idx; }
+    // 막판 긴장: 화면 살짝 흔들림
+    if(p>.85 && p<1) $("stage").classList.add("shake"); else $("stage").classList.remove("shake");
+    drawWheel();
+    if(p<1) requestAnimationFrame(frame); else finish(w);
+  }
+  requestAnimationFrame(frame);
+}
+function idxAt(th){ // 포인터(위쪽)가 가리키는 칸 번호
+  const a = ((-Math.PI/2 - th)%(Math.PI*2)+Math.PI*2)%(Math.PI*2);
+  return Math.floor(a/SEG)%N;
+}
+function flap(sn){
+  const el=$("pointer"); el.animate([{transform:"translateX(-50%) rotate(0deg)"},
+    {transform:`translateX(-50%) rotate(${-10-sn*22}deg)`,offset:.35},{transform:"translateX(-50%) rotate(0deg)"}],{duration:90+ (1-sn)*160});
+}
+function finish(w){
+  $("stage").classList.remove("shake"); $("stage").style.transform="scale(1)";
+  // 정적 → 번쩍 → 쾅
+  setTimeout(()=>{
+    $("flash").classList.remove("go"); void $("flash").offsetWidth; $("flash").classList.add("go");
+    boom(); fanfare();
+    $("dim").classList.add("on");
+    $("winName").textContent = SLOTS[w].emoji+" "+SLOTS[w].name+"!";
+    $("win").classList.add("on");
+    grandFinale();
+  }, 700);
+}
+$("go").onclick = spin;
+$("again").onclick = () => {
+  $("win").classList.remove("on"); $("dim").classList.remove("on");
+  spinning=false; $("go").disabled=false;
+};
+
+// 대기 중 전구 깜빡임
+(function idle(){ if(!spinning) drawWheel(); requestAnimationFrame(idle); })();
+</script>
+</body>
+</html>

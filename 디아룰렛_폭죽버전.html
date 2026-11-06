@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>디아2 래더 직업 뽑기</title>
+<style>
+  :root{
+    --bg:#0e0b0a; --panel:#1a1412; --line:#3a2d27; --text:#e8dccb; --muted:#9a8a78;
+    --gold:#c8a15a; --red:#a3261c; --red2:#d23a2b;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1200px 600px at 50% -10%,#2a1511 0%,var(--bg) 60%);color:var(--text);
+    font-family:"Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;min-height:100vh}
+  .wrap{max-width:980px;margin:0 auto;padding:28px 16px 60px}
+  h1{margin:0 0 4px;font-size:28px;letter-spacing:1px;color:var(--gold);text-shadow:0 2px 12px #000}
+  .sub{color:var(--muted);margin-bottom:22px;font-size:14px}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:18px}
+  .panel h2{margin:0 0 12px;font-size:15px;color:var(--gold);font-weight:600}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+  .card{background:#140f0d;border:1px solid var(--line);border-radius:8px;padding:12px}
+  .card input[type=text]{width:100%;background:#0e0b0a;border:1px solid var(--line);color:var(--text);
+    padding:7px 9px;border-radius:6px;font-size:15px;margin-bottom:10px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .chip{cursor:pointer;user-select:none;border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:13px;
+    color:var(--text);background:#201815;transition:.12s}
+  .chip:hover{border-color:var(--gold)}
+  .chip.off{background:#2a0f0c;border-color:var(--red);color:#7a5a55;text-decoration:line-through}
+  .hint{font-size:12px;color:var(--muted);margin-bottom:8px}
+  .pool .chip.off{opacity:.55}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .row input[type=text]{background:#0e0b0a;border:1px solid var(--line);color:var(--text);padding:6px 9px;border-radius:6px}
+  button{cursor:pointer;border:1px solid var(--line);background:#241a16;color:var(--text);padding:7px 14px;border-radius:6px;font-size:14px}
+  button:hover{border-color:var(--gold)}
+  .go{display:block;margin:6px auto 22px;padding:14px 46px;font-size:20px;font-weight:700;letter-spacing:2px;
+    background:linear-gradient(#b8301f,#7d1a12);border:1px solid #e0624f;color:#fff;border-radius:8px;
+    box-shadow:0 0 22px #a3261c66}
+  .go:disabled{opacity:.5;cursor:default}
+  .err{color:#ff8a7a;text-align:center;min-height:20px;margin-bottom:10px;font-size:14px}
+  .results{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+  .res{background:#140f0d;border:1px solid var(--line);border-radius:10px;padding:18px 10px;text-align:center}
+  .res .who{color:var(--muted);font-size:14px;margin-bottom:8px}
+  .res .cls{font-size:26px;font-weight:700;color:var(--gold);min-height:36px}
+  .res.spin .cls{color:#fff;opacity:.8}
+  .res.done{border-color:var(--gold);box-shadow:0 0 18px #c8a15a33}
+  .res.done .cls{animation:pop .4s ease}
+  @keyframes pop{0%{transform:scale(.6);opacity:0}100%{transform:scale(1);opacity:1}}
+  .x{color:var(--muted);cursor:pointer;margin-left:6px}
+  #fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:50}
+  .res.done{animation:shake .45s ease}
+  @keyframes shake{0%,100%{transform:translate(0)}20%{transform:translate(-4px,2px)}40%{transform:translate(4px,-3px)}60%{transform:translate(-3px,-2px)}80%{transform:translate(3px,2px)}}
+  .res.done .cls{text-shadow:0 0 14px #ffd27a,0 0 28px #c8a15a;font-size:30px}
+</style>
+</head>
+<body>
+<canvas id="fx"></canvas>
+<div class="wrap">
+  <h1>⚔ 디아블로2 래더 직업 뽑기</h1>
+  <div class="sub">친구별로 이전 시즌 직업을 제외하고, 직업이 겹치지 않게 랜덤 배정합니다. (클릭하면 제외 / 해제)</div>
+
+  <div class="panel">
+    <label style="cursor:pointer;font-size:16px">
+      <input type="checkbox" id="allowDup" style="transform:scale(1.3);margin-right:8px">
+      직업 중복 허용 <span style="color:var(--muted);font-size:13px">(끄면 5명 모두 서로 다른 직업)</span>
+    </label>
+  </div>
+
+  <div class="panel pool">
+    <h2>전체 직업 풀 <span style="color:var(--muted);font-weight:400">— 꺼진 직업은 아무에게도 배정되지 않음</span></h2>
+    <div class="chips" id="pool"></div>
+    <div class="row" style="margin-top:12px">
+      <input type="text" id="newCls" placeholder="직업 추가 (예: 워락)">
+      <button id="addCls">추가</button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>참가자별 제외 직업 <span style="color:var(--muted);font-weight:400">— 빨간색 취소선 = 이전 시즌에 플레이해서 제외</span></h2>
+    <div class="grid" id="players"></div>
+  </div>
+
+  <div class="err" id="err"></div>
+  <button class="go" id="go">뽑기!</button>
+
+  <div class="panel">
+    <h2>결과</h2>
+    <div class="results" id="results"><div class="hint">뽑기 버튼을 누르세요.</div></div>
+  </div>
+</div>
+
+<script>
+const DEFAULT_CLASSES = ["아마존","네크로맨서","바바리안","팔라딘","소서리스","드루이드","어쌔신","악마술사"];
+const PLAYER_NAMES = ["김기준","김지훈","김현우","정근호","정연호"];
+const KEY = "dia_ladder_v2";
+
+let state = load() || {
+  allowDup: false,
+  classes: DEFAULT_CLASSES.map(n => ({name:n, on:true})),
+  players: PLAYER_NAMES.map(n => ({name:n, excl:[]}))
+};
+state.players.forEach((p,i) => p.name = PLAYER_NAMES[i]);
+
+function load(){ try{ return JSON.parse(localStorage.getItem(KEY)); }catch(e){ return null; } }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+
+const $ = id => document.getElementById(id);
+
+function renderPool(){
+  const el = $("pool"); el.innerHTML = "";
+  state.classes.forEach((c,i)=>{
+    const s = document.createElement("span");
+    s.className = "chip" + (c.on ? "" : " off");
+    s.textContent = c.name;
+    s.onclick = () => { c.on = !c.on; save(); renderPool(); renderPlayers(); };
+    if(!DEFAULT_CLASSES.includes(c.name)){
+      const x = document.createElement("span"); x.className="x"; x.textContent="×";
+      x.onclick = e => { e.stopPropagation();
+        state.classes.splice(i,1);
+        state.players.forEach(p => p.excl = p.excl.filter(n => n !== c.name));
+        save(); renderPool(); renderPlayers(); };
+      s.appendChild(x);
+    }
+    el.appendChild(s);
+  });
+}
+
+function renderPlayers(){
+  const el = $("players"); el.innerHTML = "";
+  state.players.forEach(p=>{
+    const card = document.createElement("div"); card.className = "card";
+    const inp = document.createElement("input"); inp.type="text"; inp.value=p.name; inp.readOnly = true;
+    card.appendChild(inp);
+    const chips = document.createElement("div"); chips.className="chips";
+    state.classes.filter(c=>c.on).forEach(c=>{
+      const s = document.createElement("span");
+      const ex = p.excl.includes(c.name);
+      s.className = "chip" + (ex ? " off" : "");
+      s.textContent = c.name;
+      s.onclick = () => {
+        p.excl = ex ? p.excl.filter(n=>n!==c.name) : [...p.excl, c.name];
+        save(); renderPlayers();
+      };
+      chips.appendChild(s);
+    });
+    card.appendChild(chips);
+    el.appendChild(card);
+  });
+}
+
+$("addCls").onclick = () => {
+  const v = $("newCls").value.trim();
+  if(!v || state.classes.some(c=>c.name===v)) return;
+  state.classes.push({name:v, on:true});
+  $("newCls").value = "";
+  save(); renderPool(); renderPlayers();
+};
+$("newCls").addEventListener("keydown", e => { if(e.key==="Enter") $("addCls").click(); });
+
+function shuffle(a){
+  a = a.slice();
+  for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+
+// 겹침 없이, 제외 조건을 만족하는 랜덤 배정 (백트래킹). 불가능하면 null.
+function assign(){
+  const pool = state.classes.filter(c=>c.on).map(c=>c.name);
+  const opts = state.players.map(p => shuffle(pool.filter(n => !p.excl.includes(n))));
+  const order = shuffle(state.players.map((_,i)=>i)).sort((a,b)=>opts[a].length-opts[b].length);
+  const result = new Array(state.players.length);
+  if(state.allowDup){
+    for(let i=0;i<opts.length;i++){
+      if(!opts[i].length) return null;
+      result[i] = opts[i][0];
+    }
+    return result;
+  }
+  const used = new Set();
+  function dfs(k){
+    if(k===order.length) return true;
+    const pi = order[k];
+    for(const c of opts[pi]){
+      if(used.has(c)) continue;
+      used.add(c); result[pi]=c;
+      if(dfs(k+1)) return true;
+      used.delete(c);
+    }
+    return false;
+  }
+  return dfs(0) ? result : null;
+}
+
+// ===== 폭죽 효과 =====
+const fx = $("fx"), g = fx.getContext("2d");
+let parts = [], raf = null;
+function resizeFx(){ fx.width = innerWidth; fx.height = innerHeight; }
+addEventListener("resize", resizeFx); resizeFx();
+const COLORS = ["#ffd27a","#ff5a3c","#ff9f1c","#fff3c4","#e63946","#7bdff2","#b8f35d","#f78fb3"];
+
+function burst(x, y, n=70, power=1){
+  for(let i=0;i<n;i++){
+    const a = Math.random()*Math.PI*2, s = (2+Math.random()*6)*power;
+    parts.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:1,decay:.008+Math.random()*.014,
+      size:2+Math.random()*3,color:COLORS[Math.floor(Math.random()*COLORS.length)],type:"spark"});
+  }
+  startFx();
+}
+function confettiRain(n=120){
+  for(let i=0;i<n;i++){
+    parts.push({x:Math.random()*fx.width,y:-20-Math.random()*200,vx:(Math.random()-.5)*3,vy:2+Math.random()*4,
+      life:1,decay:.0035,size:5+Math.random()*6,rot:Math.random()*6,vr:(Math.random()-.5)*.3,
+      color:COLORS[Math.floor(Math.random()*COLORS.length)],type:"conf"});
+  }
+  startFx();
+}
+function startFx(){ if(!raf) raf = requestAnimationFrame(tickFx); }
+function tickFx(){
+  g.clearRect(0,0,fx.width,fx.height);
+  parts = parts.filter(p => p.life > 0 && p.y < fx.height + 40);
+  for(const p of parts){
+    p.x += p.vx; p.y += p.vy; p.life -= p.decay;
+    if(p.type==="spark"){ p.vy += .09; p.vx *= .985; }
+    else { p.rot += p.vr; p.vx += Math.sin(p.rot)*.05; }
+    g.globalAlpha = Math.max(p.life,0);
+    g.fillStyle = p.color;
+    if(p.type==="spark"){ g.beginPath(); g.arc(p.x,p.y,p.size,0,Math.PI*2); g.fill(); }
+    else { g.save(); g.translate(p.x,p.y); g.rotate(p.rot); g.fillRect(-p.size/2,-p.size/4,p.size,p.size/2); g.restore(); }
+  }
+  g.globalAlpha = 1;
+  if(parts.length){ raf = requestAnimationFrame(tickFx); }
+  else { raf = null; g.clearRect(0,0,fx.width,fx.height); }
+}
+function burstAt(el, n, power){
+  const r = el.getBoundingClientRect();
+  burst(r.left + r.width/2, r.top + r.height/2, n, power);
+}
+function finale(){
+  confettiRain(160);
+  for(let i=0;i<6;i++){
+    setTimeout(() => burst(innerWidth*(.15+Math.random()*.7), innerHeight*(.15+Math.random()*.45), 90, 1.3), i*220);
+  }
+}
+
+let running = false;
+$("go").onclick = async () => {
+  if(running) return;
+  const err = $("err"); err.textContent = "";
+  const pool = state.classes.filter(c=>c.on);
+  if(!state.allowDup && pool.length < state.players.length){
+    err.textContent = `사용 가능한 직업(${pool.length})이 참가자(${state.players.length}명)보다 적습니다.`; return;
+  }
+  const res = assign();
+  if(!res){
+    err.textContent = state.allowDup
+      ? "선택 가능한 직업이 없는 참가자가 있습니다. 제외를 줄여주세요."
+      : "제외 조건 때문에 겹치지 않게 배정할 수 없습니다. 제외를 줄이거나 중복 허용을 켜세요."; return;
+  }
+  running = true; $("go").disabled = true;
+  const box = $("results"); box.innerHTML = "";
+  const cells = state.players.map(p=>{
+    const d = document.createElement("div"); d.className="res spin";
+    d.innerHTML = `<div class="who"></div><div class="cls">?</div>`;
+    d.querySelector(".who").textContent = p.name || "(이름없음)";
+    box.appendChild(d); return d;
+  });
+  const names = pool.map(c=>c.name);
+  // 모두 동시에 돌리다가 순서대로 멈춤
+  const timers = cells.map(d => setInterval(() => {
+    d.querySelector(".cls").textContent = names[Math.floor(Math.random()*names.length)];
+  }, 70));
+  for(let i=0;i<cells.length;i++){
+    await new Promise(r => setTimeout(r, 900 + i*500));
+    clearInterval(timers[i]);
+    cells[i].className = "res done";
+    cells[i].querySelector(".cls").textContent = res[i];
+    burstAt(cells[i], 80, 1.1);
+  }
+  finale();
+  running = false; $("go").disabled = false;
+};
+
+$("allowDup").checked = !!state.allowDup;
+$("allowDup").onchange = e => { state.allowDup = e.target.checked; save(); };
+
+renderPool(); renderPlayers();
+</script>
+</body>
+</html>
