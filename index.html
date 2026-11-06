@@ -46,14 +46,34 @@
   .res.done .cls{animation:pop .4s ease}
   @keyframes pop{0%{transform:scale(.6);opacity:0}100%{transform:scale(1);opacity:1}}
   .x{color:var(--muted);cursor:pointer;margin-left:6px}
-  #fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:50}
+  #fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:90}
   .res.done{animation:shake .45s ease}
   @keyframes shake{0%,100%{transform:translate(0)}20%{transform:translate(-4px,2px)}40%{transform:translate(4px,-3px)}60%{transform:translate(-3px,-2px)}80%{transform:translate(3px,2px)}}
   .res.done .cls{text-shadow:0 0 14px #ffd27a,0 0 28px #c8a15a;font-size:30px}
+  #pop{position:fixed;inset:0;z-index:80;display:none;align-items:center;justify-content:center;
+    background:rgba(0,0,0,.82);cursor:pointer}
+  #pop.on{display:flex}
+  #pop .box{text-align:center;animation:popin .55s cubic-bezier(.2,1.5,.4,1)}
+  #pop .who{font-size:clamp(18px,3vw,26px);color:var(--muted);margin-bottom:8px;letter-spacing:2px}
+  #pop .art{width:min(70vw,340px);height:min(62vh,460px);margin:0 auto;display:flex;align-items:center;justify-content:center;
+    border:2px solid var(--gold);border-radius:12px;background:radial-gradient(circle at 50% 35%,#3a1d16,#120c0a);
+    box-shadow:0 0 40px #c8a15a66;overflow:hidden}
+  #pop .art img{width:100%;height:100%;object-fit:contain}
+  #pop .art .emo{font-size:min(30vw,170px)}
+  #pop .nm{font-size:clamp(40px,10vw,72px);font-weight:900;color:var(--gold);margin-top:14px;
+    text-shadow:0 0 24px #ff9f1c,0 4px 0 #5a2a00}
+  #pop .hint2{color:var(--muted);font-size:13px;margin-top:6px}
+  @keyframes popin{0%{transform:scale(.4) rotate(-6deg);opacity:0}100%{transform:scale(1) rotate(0);opacity:1}}
 </style>
 </head>
 <body>
 <canvas id="fx"></canvas>
+<div id="pop"><div class="box">
+  <div class="who" id="popWho"></div>
+  <div class="art" id="popArt"></div>
+  <div class="nm" id="popNm"></div>
+  <div class="hint2">클릭하면 넘어갑니다</div>
+</div></div>
 <div class="wrap">
   <h1>⚔ 디아블로2 래더 직업 뽑기</h1>
   <div class="sub">친구별로 이전 시즌 직업을 제외하고, 직업이 겹치지 않게 랜덤 배정합니다. (클릭하면 제외 / 해제)</div>
@@ -241,6 +261,33 @@ function finale(){
   }
 }
 
+// ===== 당첨 직업 팝업 =====
+// img/ 폴더에 아래 파일명으로 이미지를 넣으면 표시되고, 없으면 이모지 카드로 대체됩니다.
+const CLASS_IMG = {
+  "아마존":"img/amazon.png","네크로맨서":"img/necromancer.png","바바리안":"img/barbarian.png",
+  "팔라딘":"img/paladin.png","소서리스":"img/sorceress.png","드루이드":"img/druid.png",
+  "어쌔신":"img/assassin.png","악마술사":"img/warlock.png"
+};
+const CLASS_EMO = {"아마존":"🏹","네크로맨서":"💀","바바리안":"⚔️","팔라딘":"🛡️","소서리스":"❄️","드루이드":"🐺","어쌔신":"🗡️","악마술사":"😈"};
+function showPop(who, cls){
+  return new Promise(resolve => {
+    const pop = $("pop"), art = $("popArt");
+    $("popWho").textContent = who;
+    $("popNm").textContent = cls;
+    art.innerHTML = "";
+    const emo = () => { art.innerHTML = `<div class="emo">${CLASS_EMO[cls]||"🎲"}</div>`; };
+    if(CLASS_IMG[cls]){
+      const im = new Image(); im.alt = cls; im.onerror = emo; im.src = CLASS_IMG[cls]; art.appendChild(im);
+    } else emo();
+    pop.classList.add("on");
+    burst(innerWidth/2, innerHeight/2, 120, 1.5);
+    let done = false;
+    const close = () => { if(done) return; done = true; pop.classList.remove("on"); pop.onclick = null; resolve(); };
+    pop.onclick = close;
+    setTimeout(close, 2600);
+  });
+}
+
 let running = false;
 $("go").onclick = async () => {
   if(running) return;
@@ -274,6 +321,7 @@ $("go").onclick = async () => {
     cells[i].className = "res done";
     cells[i].querySelector(".cls").textContent = res[i];
     burstAt(cells[i], 80, 1.1);
+    await showPop(state.players[i].name, res[i]);
   }
   finale();
   running = false; $("go").disabled = false;
