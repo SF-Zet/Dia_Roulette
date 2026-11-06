@@ -94,7 +94,8 @@
   #pop .face.back{transform:rotateY(180deg);background:repeating-linear-gradient(45deg,#1b1330 0 10px,#241a40 10px 20px);
     border:3px solid var(--c);display:flex;align-items:center;justify-content:center;font-size:56px;font-weight:900;color:var(--c)}
   #pop .face.front{background:linear-gradient(160deg,#fff3b0 0%,#e2b341 38%,#8a5a12 100%);
-    box-shadow:0 0 36px var(--c),0 0 90px var(--c)}
+    box-shadow:0 0 36px var(--c),0 0 90px var(--c);visibility:hidden}
+  #pop .card.flip .face.front{visibility:visible}
   #pop .front .inner{position:absolute;inset:7px;border-radius:12px;background:radial-gradient(circle at 50% 38%,#3a2412,#120a06);
     border:2px solid #fff3b099;overflow:hidden}
   #pop .front .art{position:absolute;left:0;right:0;top:12%;height:66%;display:flex;align-items:center;justify-content:center}
@@ -119,7 +120,7 @@
 <div class="wrap">
   <h1>⚔ 디아블로2 래더 직업 뽑기</h1>
   <div class="sub">친구별로 이전 시즌 직업을 제외하고, 직업이 겹치지 않게 랜덤 배정합니다. (클릭하면 제외 / 해제)</div>
-  <div class="sub" style="margin-top:-14px;color:var(--gold)">🆕 v5 (11/06) · 당첨 팝업을 피파온라인식 카드팩 깡 연출로 변경 (+ 아마존 활 방향 수정)</div>
+  <div class="sub" style="margin-top:-14px;color:var(--gold)">🆕 v5.1 (11/06) · 카드팩 깡 연출 (팩/카드 뒷면 색 통일, 공개 전 직업 노출 방지)</div>
 
   <div class="panel">
     <label style="cursor:pointer;font-size:16px">
@@ -332,7 +333,7 @@ function beep(freq, dur, type="square", vol=.1, when=0){
 function showPop(who, cls){
   return new Promise(resolve => {
     const pop = $("pop");
-    pop.style.setProperty("--c", CLASS_COLOR[cls] || "#ffd27a");
+    pop.style.setProperty("--c", "#ffd27a");   // 공개 전에는 모든 직업 동일한 금색 (색으로 직업이 유추되지 않게)
     pop.innerHTML = `
       <div class="rays"></div>
       <div class="stage">
@@ -375,6 +376,7 @@ function showPop(who, cls){
       burst(cx(), cy(), 90, 1.4);
     };
     const flip = () => {          // 카드 공개
+      pop.style.setProperty("--c", CLASS_COLOR[cls] || "#ffd27a");   // 공개 순간에만 직업 색상 적용
       card.classList.add("flip"); stage = 3; revealedAt = Date.now();
       [523,659,784,1047].forEach((f,i) => beep(f,.25,"triangle",.2,i*.1));
       burst(cx(), cy(), 140, 1.7);
@@ -433,10 +435,11 @@ $("go").onclick = async () => {
   for(let i=0;i<cells.length;i++){
     await new Promise(r => setTimeout(r, 900 + i*500));
     clearInterval(timers[i]);
-    cells[i].className = "res done";
+    cells[i].querySelector(".cls").textContent = "?";   // 팝업이 끝날 때까지 직업을 숨김
+    await showPop(state.players[i].name, res[i]);
+    cells[i].className = "res done";                    // 팝업 종료 후 결과 칸에 공개
     cells[i].querySelector(".cls").textContent = res[i];
     burstAt(cells[i], 80, 1.1);
-    await showPop(state.players[i].name, res[i]);
   }
   finale();
   running = false; $("go").disabled = false;
