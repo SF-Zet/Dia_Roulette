@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 420">
+<defs><radialGradient id="bg" cx="50%" cy="38%" r="80%"><stop offset="0" stop-color="#3a1458"/><stop offset="1" stop-color="#07030b"/></radialGradient>
+<filter id="gl"><feGaussianBlur stdDeviation="9"/></filter></defs>
+<rect width="300" height="420" fill="url(#bg)"/>
+<circle cx="150" cy="200" r="100" fill="#5dff4a" opacity=".22" filter="url(#gl)"/>
+<ellipse cx="150" cy="398" rx="100" ry="12" fill="none" stroke="#5dff4a" stroke-width="2" stroke-dasharray="6 6" opacity=".8"/>
+<ellipse cx="150" cy="398" rx="70" ry="8" fill="none" stroke="#5dff4a" stroke-width="1.5" opacity=".6"/>
+<!-- 로브 -->
+<path d="M150 96 Q106 104 100 168 L72 386 L90 372 L108 392 L128 376 L150 394 L172 376 L192 392 L210 372 L228 386 L200 168 Q194 104 150 96 Z" fill="#0f0618" stroke="#9a5cff" stroke-width="2.5"/>
+<path d="M150 176 L150 380" stroke="#5dff4a" stroke-width="1.5" opacity=".55"/>
+<path d="M124 220 L176 220 M120 262 L180 262" stroke="#5dff4a" stroke-width="2" opacity=".5"/>
+<!-- 얼굴 + 뿔 -->
+<ellipse cx="150" cy="146" rx="25" ry="31" fill="#030105"/>
+<path d="M139 142 L148 146 L139 148 Z M161 142 L152 146 L161 148 Z" fill="#7dff5a" stroke="#7dff5a" stroke-width="3"/>
+<path d="M130 112 Q104 100 110 58 Q120 90 140 100 Z" fill="#cfc2dd" stroke="#9a5cff" stroke-width="1.5"/>
+<path d="M170 112 Q196 100 190 58 Q180 90 160 100 Z" fill="#cfc2dd" stroke="#9a5cff" stroke-width="1.5"/>
+<!-- 마법서 -->
+<g transform="rotate(-14 90 250)"><rect x="56" y="222" width="68" height="52" rx="4" fill="#2a0e44" stroke="#9a5cff" stroke-width="2.5"/>
+<path d="M90 222 L90 274" stroke="#9a5cff" stroke-width="2"/><circle cx="73" cy="248" r="9" fill="none" stroke="#5dff4a" stroke-width="2"/><path d="M107 238 L118 238 M107 248 L118 248 M107 258 L118 258" stroke="#5dff4a" stroke-width="2"/></g>
+<path d="M118 205 Q100 218 104 232" fill="none" stroke="#9a5cff" stroke-width="7" stroke-linecap="round"/>
+<!-- 지옥불 -->
+<path d="M214 232 Q196 196 220 164 Q220 188 238 176 Q250 200 236 226 Q230 238 214 232 Z" fill="#5dff4a" opacity=".9"/>
+<path d="M220 228 Q210 204 224 184 Q228 202 236 208 Q238 224 220 228 Z" fill="#d7ffc9"/>
+<path d="M188 205 Q204 232 214 232" fill="none" stroke="#9a5cff" stroke-width="7" stroke-linecap="round"/>
+<!-- 악마의 눈 -->
+<ellipse cx="236" cy="108" rx="22" ry="12" fill="#1a0a28" stroke="#9a5cff" stroke-width="2"/>
+<circle cx="236" cy="108" r="8" fill="#5dff4a"/><ellipse cx="236" cy="108" rx="2.4" ry="7" fill="#05140a"/>
+</svg>

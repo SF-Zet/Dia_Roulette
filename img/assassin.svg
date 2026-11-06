@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 420">
+<defs><radialGradient id="bg" cx="50%" cy="38%" r="80%"><stop offset="0" stop-color="#5a1620"/><stop offset="1" stop-color="#0a0405"/></radialGradient>
+<filter id="gl"><feGaussianBlur stdDeviation="9"/></filter></defs>
+<rect width="300" height="420" fill="url(#bg)"/>
+<circle cx="150" cy="200" r="95" fill="#e03a4a" opacity=".28" filter="url(#gl)"/>
+<ellipse cx="150" cy="398" rx="90" ry="10" fill="#000" opacity=".5"/>
+<!-- 망토 -->
+<path d="M150 108 Q88 128 82 230 L56 394 L244 394 L218 230 Q212 128 150 108 Z" fill="#12080b" stroke="#c23a46" stroke-width="2.5"/>
+<path d="M150 190 L150 392" stroke="#c23a46" stroke-width="1.5" opacity=".5"/>
+<!-- 다리/몸 -->
+<path d="M122 300 L116 394 L142 394 L150 326 L158 394 L184 394 L178 300 Z" fill="#0a0507" stroke="#c23a46" stroke-width="2"/>
+<path d="M118 190 Q150 176 182 190 L178 306 L122 306 Z" fill="#0a0507" stroke="#c23a46" stroke-width="2"/>
+<path d="M122 262 L178 262" stroke="#c23a46" stroke-width="5"/>
+<!-- 후드 + 복면 -->
+<path d="M122 154 Q122 104 150 98 Q178 104 178 154 L170 176 L130 176 Z" fill="#0b0507" stroke="#c23a46" stroke-width="2.5"/>
+<rect x="128" y="146" width="44" height="22" fill="#2a0e14"/>
+<path d="M134 138 L146 142 M166 138 L154 142" stroke="#ff3b4a" stroke-width="4" stroke-linecap="round"/>
+<path d="M130 172 Q150 200 170 172 L176 208 L124 208 Z" fill="#8a1f2b"/>
+<!-- 카타르 (왼) -->
+<path d="M118 215 L80 246" stroke="#c23a46" stroke-width="7" stroke-linecap="round"/>
+<g stroke="#e4eaee" stroke-width="5" stroke-linecap="round"><path d="M76 250 L28 196"/><path d="M80 254 L22 224"/><path d="M84 258 L36 262"/></g>
+<!-- 카타르 (오) -->
+<path d="M182 215 L220 246" stroke="#c23a46" stroke-width="7" stroke-linecap="round"/>
+<g stroke="#e4eaee" stroke-width="5" stroke-linecap="round"><path d="M224 250 L272 196"/><path d="M220 254 L278 224"/><path d="M216 258 L264 262"/></g>
+</svg>

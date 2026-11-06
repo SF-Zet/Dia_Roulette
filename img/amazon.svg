@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 420">
+<defs><radialGradient id="bg" cx="50%" cy="38%" r="80%"><stop offset="0" stop-color="#244a24"/><stop offset="1" stop-color="#0a0d08"/></radialGradient>
+<filter id="gl"><feGaussianBlur stdDeviation="9"/></filter></defs>
+<rect width="300" height="420" fill="url(#bg)"/>
+<circle cx="150" cy="200" r="95" fill="#5fd35f" opacity=".3" filter="url(#gl)"/>
+<ellipse cx="150" cy="398" rx="80" ry="10" fill="#000" opacity=".5"/>
+<!-- 포니테일 -->
+<path d="M165 135 Q225 140 205 225 Q198 175 163 160 Z" fill="#1a1207" stroke="#e0b44a" stroke-width="2"/>
+<!-- 다리 -->
+<path d="M122 295 L116 392 L141 392 L150 320 L159 392 L184 392 L178 295 Z" fill="#14100a" stroke="#7bd96b" stroke-width="2"/>
+<!-- 몸통 -->
+<path d="M116 188 Q150 172 184 188 L180 300 L120 300 Z" fill="#14100a" stroke="#7bd96b" stroke-width="2.5"/>
+<path d="M122 258 L178 258" stroke="#e0b44a" stroke-width="5"/>
+<path d="M120 300 L180 300 L192 330 L108 330 Z" fill="#1d1608" stroke="#e0b44a" stroke-width="2"/>
+<!-- 머리 -->
+<circle cx="150" cy="150" r="21" fill="#14100a" stroke="#7bd96b" stroke-width="2.5"/>
+<path d="M129 144 Q150 118 171 144 Q150 134 129 144 Z" fill="#e0b44a"/>
+<circle cx="143" cy="152" r="2.4" fill="#aaff88"/><circle cx="157" cy="152" r="2.4" fill="#aaff88"/>
+<!-- 활 -->
+<path d="M88 110 Q28 210 88 315" fill="none" stroke="#e0b44a" stroke-width="6" stroke-linecap="round"/>
+<path d="M88 110 L88 315" stroke="#d9f5cf" stroke-width="1.5"/>
+<path d="M60 213 L150 213" stroke="#d9d2bf" stroke-width="3"/>
+<path d="M150 213 L168 213 L160 207 M168 213 L160 219" fill="none" stroke="#d9d2bf" stroke-width="3"/>
+<path d="M95 213 L120 213" stroke="#7bd96b" stroke-width="5"/>
+<!-- 창 -->
+<path d="M232 62 L232 345" stroke="#b08a4a" stroke-width="5"/>
+<path d="M232 36 L240 70 L224 70 Z" fill="#dfe6ea" stroke="#fff" stroke-width="1"/>
+<path d="M184 205 Q215 215 232 200" fill="none" stroke="#7bd96b" stroke-width="5" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 420">
+<defs><radialGradient id="bg" cx="50%" cy="38%" r="80%"><stop offset="0" stop-color="#14456b"/><stop offset="1" stop-color="#050a10"/></radialGradient>
+<filter id="gl"><feGaussianBlur stdDeviation="9"/></filter></defs>
+<rect width="300" height="420" fill="url(#bg)"/>
+<circle cx="205" cy="200" r="80" fill="#8fe3ff" opacity=".35" filter="url(#gl)"/>
+<ellipse cx="150" cy="398" rx="90" ry="10" fill="#000" opacity=".5"/>
+<!-- 드레스 -->
+<path d="M150 138 Q118 160 114 232 L84 396 L216 396 L186 232 Q182 160 150 138 Z" fill="#0a1824" stroke="#7fd6ff" stroke-width="2.5"/>
+<path d="M130 232 Q150 250 170 232 M126 290 Q150 314 174 290" fill="none" stroke="#7fd6ff" stroke-width="2" opacity=".6"/>
+<!-- 긴 머리 -->
+<path d="M132 110 Q108 190 128 270 Q146 190 150 128 Z" fill="#0e2234" stroke="#7fd6ff" stroke-width="2"/>
+<path d="M168 110 Q192 190 172 270 Q154 190 150 128 Z" fill="#0e2234" stroke="#7fd6ff" stroke-width="2"/>
+<circle cx="150" cy="122" r="19" fill="#0a1824" stroke="#7fd6ff" stroke-width="2.5"/>
+<path d="M134 108 L150 88 L166 108 Q150 100 134 108 Z" fill="#bff0ff"/>
+<circle cx="144" cy="124" r="2.2" fill="#d6f6ff"/><circle cx="156" cy="124" r="2.2" fill="#d6f6ff"/>
+<!-- 지팡이 -->
+<path d="M82 120 L88 396" stroke="#6b8aa0" stroke-width="5"/>
+<path d="M82 66 L96 92 L82 120 L68 92 Z" fill="#bff0ff" stroke="#fff" stroke-width="2"/>
+<path d="M82 66 L82 120" stroke="#fff" stroke-width="1" opacity=".7"/>
+<!-- 올린 팔과 얼음구체 -->
+<path d="M180 190 Q214 196 214 168" fill="none" stroke="#7fd6ff" stroke-width="7" stroke-linecap="round"/>
+<circle cx="214" cy="146" r="22" fill="#dff7ff" opacity=".9"/>
+<circle cx="214" cy="146" r="13" fill="#8fe3ff"/>
+<!-- 얼음 조각 -->
+<g fill="#bff0ff" stroke="#fff" stroke-width="1.5">
+<path d="M246 96 L254 124 L240 124 Z"/><path d="M262 168 L270 192 L256 192 Z"/><path d="M238 214 L244 234 L232 234 Z"/>
+<path d="M176 100 L182 120 L170 120 Z"/><path d="M40 250 L47 272 L33 272 Z"/></g>
+<g fill="#fff" opacity=".7"><circle cx="40" cy="70" r="2"/><circle cx="262" cy="60" r="2.5"/><circle cx="120" cy="52" r="1.8"/><circle cx="270" cy="300" r="2"/><circle cx="30" cy="340" r="2"/></g>
+</svg>

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 420">
+<defs><radialGradient id="bg" cx="50%" cy="38%" r="80%"><stop offset="0" stop-color="#3c1b55"/><stop offset="1" stop-color="#0a060d"/></radialGradient>
+<filter id="gl"><feGaussianBlur stdDeviation="9"/></filter></defs>
+<rect width="300" height="420" fill="url(#bg)"/>
+<circle cx="150" cy="190" r="95" fill="#a25be0" opacity=".3" filter="url(#gl)"/>
+<ellipse cx="150" cy="398" rx="90" ry="10" fill="#000" opacity=".5"/>
+<!-- 로브 -->
+<path d="M150 92 Q105 100 98 165 L66 396 L234 396 L202 165 Q195 100 150 92 Z" fill="#12081a" stroke="#b27be0" stroke-width="2.5"/>
+<path d="M120 230 Q150 250 180 230 M116 258 Q150 280 184 258 M112 286 Q150 310 188 286 M108 314 Q150 340 192 314" fill="none" stroke="#d8cfb6" stroke-width="3" opacity=".55"/>
+<path d="M150 170 L150 390" stroke="#b27be0" stroke-width="1.5" opacity=".6"/>
+<!-- 얼굴 -->
+<ellipse cx="150" cy="146" rx="26" ry="32" fill="#030104"/>
+<circle cx="141" cy="143" r="4" fill="#a5ff6a"/><circle cx="159" cy="143" r="4" fill="#a5ff6a"/>
+<circle cx="141" cy="143" r="9" fill="#a5ff6a" opacity=".25"/><circle cx="159" cy="143" r="9" fill="#a5ff6a" opacity=".25"/>
+<!-- 지팡이 + 해골 -->
+<path d="M232 118 L228 396" stroke="#8a6a45" stroke-width="6"/>
+<circle cx="233" cy="96" r="19" fill="#ece5d2"/>
+<rect x="224" y="108" width="18" height="12" rx="3" fill="#ece5d2"/>
+<circle cx="226" cy="94" r="4.5" fill="#12081a"/><circle cx="241" cy="94" r="4.5" fill="#12081a"/>
+<path d="M233 99 L230 106 L236 106 Z" fill="#12081a"/>
+<path d="M196 192 Q218 224 230 214" fill="none" stroke="#b27be0" stroke-width="6" stroke-linecap="round"/>
+<!-- 떠다니는 해골 -->
+<g opacity=".8"><circle cx="68" cy="130" r="9" fill="#ece5d2"/><circle cx="64" cy="128" r="2" fill="#12081a"/><circle cx="72" cy="128" r="2" fill="#12081a"/>
+<circle cx="52" cy="210" r="6.5" fill="#ece5d2" opacity=".8"/><circle cx="262" cy="250" r="7" fill="#ece5d2" opacity=".7"/></g>
+</svg>

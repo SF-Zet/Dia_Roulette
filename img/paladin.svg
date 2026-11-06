@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 420">
+<defs><radialGradient id="bg" cx="50%" cy="38%" r="80%"><stop offset="0" stop-color="#5a4812"/><stop offset="1" stop-color="#0c0904"/></radialGradient>
+<filter id="gl"><feGaussianBlur stdDeviation="9"/></filter></defs>
+<rect width="300" height="420" fill="url(#bg)"/>
+<circle cx="150" cy="130" r="80" fill="#fff3b0" opacity=".35" filter="url(#gl)"/>
+<circle cx="150" cy="210" r="100" fill="#ffd86b" opacity=".2" filter="url(#gl)"/>
+<ellipse cx="150" cy="398" rx="90" ry="10" fill="#000" opacity=".5"/>
+<!-- 다리 -->
+<path d="M112 300 L104 394 L140 394 L150 322 L160 394 L196 394 L188 300 Z" fill="#17120a" stroke="#ffd86b" stroke-width="2"/>
+<!-- 몸통 -->
+<path d="M100 192 Q150 172 200 192 L190 306 L110 306 Z" fill="#17120a" stroke="#ffd86b" stroke-width="2.5"/>
+<path d="M150 200 L150 300 M122 235 L178 235" stroke="#ffd86b" stroke-width="3" opacity=".7"/>
+<circle cx="102" cy="196" r="22" fill="#241b0c" stroke="#ffd86b" stroke-width="2.5"/>
+<circle cx="198" cy="196" r="22" fill="#241b0c" stroke="#ffd86b" stroke-width="2.5"/>
+<!-- 투구 -->
+<path d="M150 108 Q190 66 204 122 Q178 92 150 112 Z" fill="#e8c24a"/>
+<path d="M126 164 Q126 112 150 106 Q174 112 174 164 L168 180 L132 180 Z" fill="#241b0c" stroke="#ffd86b" stroke-width="3"/>
+<path d="M132 148 L168 148" stroke="#fff3b0" stroke-width="4"/>
+<path d="M150 112 L150 180" stroke="#ffd86b" stroke-width="2"/>
+<!-- 방패 -->
+<path d="M30 168 L118 168 L118 262 Q118 318 74 352 Q30 318 30 262 Z" fill="#21190b" stroke="#ffd86b" stroke-width="4"/>
+<path d="M74 190 L74 328 M44 232 L104 232" stroke="#fff3b0" stroke-width="12" stroke-linecap="square"/>
+<!-- 철퇴 -->
+<path d="M232 142 L214 340" stroke="#8a6a3a" stroke-width="7"/>
+<circle cx="234" cy="124" r="19" fill="#c8cfd5" stroke="#fff" stroke-width="2"/>
+<path d="M234 98 L234 106 M260 124 L252 124 M208 124 L216 124 M252 106 L246 112 M216 106 L222 112" stroke="#fff" stroke-width="4"/>
+<path d="M196 206 Q222 222 230 210" fill="none" stroke="#ffd86b" stroke-width="8" stroke-linecap="round"/>
+</svg>
